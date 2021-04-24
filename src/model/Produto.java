@@ -11,6 +11,12 @@ public class Produto {
 		this.nome = nome;
 		this.descricao = descricao;
 	}
+	public Produto(String nome, String descricao, Integer id) {
+		super();
+		this.nome = nome;
+		this.descricao = descricao;
+		this.id = id;
+	}
 	public String getNome() {
 		return nome;
 	}

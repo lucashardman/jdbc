@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Produto;
 
@@ -32,6 +34,29 @@ public class ProdutoDAO {
 			}
 		
 	}
+	public List<Produto> listar() throws SQLException{
+		List<Produto> produtos = new ArrayList<Produto>();
+		
+		String sql = "SELECT ID, NOME, DESCRICAO FROM PRODUTO";
+		try (PreparedStatement stm = connection.prepareStatement(sql)){
+			stm.execute();
+			try(ResultSet rst = stm.getResultSet()){
+				while(rst.next()) {
+					Produto p = new Produto(rst.getString(2), rst.getString(3),rst.getInt(1));
+					produtos.add(p);
+				}
+				
+			}
+			connection.commit();
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("ROLLBACK");
+			connection.rollback();
+		}
+		return produtos;
+	}
+	
 	private static void adicionaVariavel(String nome, String descricao, PreparedStatement stm) throws SQLException {
 		
 		stm.setString(1, nome);
